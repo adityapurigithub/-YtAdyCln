@@ -5,60 +5,83 @@ import { fetchFromAPI } from "../utils/fetchFromAPI";
 import { Sidebar, Videos } from "./";
 
 const Feed = () => {
-  const [selectedCateogry, setSelectedCategory] = useState("New");
+  const [selectedCategory, setSelectedCategory] = useState("New");
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchFromAPI(`search?part=snippet&q=${selectedCateogry}`).then((data) =>
-      setVideos(data.items)
-    );
-  }, [selectedCateogry]);
-  //setting stack direction for xs means on Xtra small-usuall devices  and md means medium
+    setLoading(true);
+    fetchFromAPI(`search?part=snippet&q=${selectedCategory}`).then((data) => {
+      setVideos(data.items);
+      setLoading(false);
+    });
+  }, [selectedCategory]);
+
   return (
     <Stack sx={{ flexDirection: { xs: "column", md: "row" } }}>
-      {/*Below Box-- used box for sidebar */}
-
+      {/* Sidebar */}
       <Box
         sx={{
           overflowY: "auto",
-          height: { xs: "", md: "89vh" },
-          width: { md: "220px" },
-          borderRight: "1px solid #3d3d3d",
-          px: { xs: 1, md: 1 }, //padding x-axis --horizontal
+          height: { xs: "auto", md: "calc(100vh - 65px)" },
+          width: { md: "210px" },
+          flexShrink: 0,
+          borderRight: { md: "1px solid rgba(255,255,255,0.07)" },
+          backgroundColor: "#0a0a0a",
+          px: { xs: 0.5, md: 1 },
         }}
       >
         <Sidebar
-          selectedCategory={selectedCateogry}
+          selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        {/* typography used for text element
-        <Typography
-          className="copyright"
-          variant="body2"
-          mt={{ sm: 25 }}
-          sx={{
-            color: "#fff",
-            px: "10px",
-          }}
-        >
-          Copyright@2023-4D1ty4
-        </Typography> */}
       </Box>
 
-      {/*this box is used for main feed  */}
-      <Box p={1.5} sx={{ overflowY: "auto", height: "83vh", flex: 2 }}>
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          mb={2}
-          sx={{
-            color: "white",
-          }}
-        >
-          <span>{selectedCateogry} </span>
-          <span style={{ color: "#fc1503" }}>Video</span>
-        </Typography>
-        <Videos videos={videos} />
+      {/* Main Feed */}
+      <Box
+        p={{ xs: 1.5, md: 2.5 }}
+        sx={{
+          overflowY: "auto",
+          height: { md: "calc(100vh - 65px)" },
+          flex: 1,
+          backgroundColor: "#0f0f0f",
+        }}
+      >
+        {/* Heading */}
+        <Box mb={3} className="fade-up">
+          <Typography
+            variant="h5"
+            fontWeight={700}
+            sx={{
+              color: "#fff",
+              fontFamily: "'Inter', sans-serif",
+              letterSpacing: "-0.3px",
+            }}
+          >
+            {selectedCategory === "New" ? "🔥 " : ""}
+            <span style={{ color: "rgba(255,255,255,0.85)" }}>
+              {selectedCategory}
+            </span>{" "}
+            <span className="gradient-text">Videos</span>
+          </Typography>
+          <Box
+            sx={{
+              mt: 1,
+              height: "2px",
+              width: "60px",
+              background: "linear-gradient(90deg, #ff0000, transparent)",
+              borderRadius: "2px",
+            }}
+          />
+        </Box>
+
+        {loading ? (
+          <Typography sx={{ color: "rgba(255,255,255,0.4)", mt: 4, textAlign: "center" }}>
+            Loading...
+          </Typography>
+        ) : (
+          <Videos videos={videos} />
+        )}
       </Box>
     </Stack>
   );

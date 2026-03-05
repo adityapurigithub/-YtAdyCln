@@ -14,17 +14,13 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Box sx={{ backgroundColor: "#000", minHeight: "100vh" }}>
+        <Box sx={{ backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
           <Navbar />
           <Routes>
             <Route path="/" element={<Feed />} />
-
             <Route path="/video/:id" element={<VideoDetail />} />
-
             <Route path="/channel/:id" element={<ChannelDetail />} />
-
             <Route path="/search/:searchQuery" element={<SearchFeed />} />
-
             <Route path="*" element={<Err404 />} />
           </Routes>
         </Box>

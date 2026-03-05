@@ -1,71 +1,62 @@
 import React from "react";
-import { Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { logo } from "../utils/constants";
-import { fontSize } from "@mui/system";
+
 const Navbar = () => {
   return (
-    <div>
-      {/* About Stack -> Documentation....p means padding ,sx is used for providing syling to mui component */}
-      <Stack
-        direction="row"
-        alignItems="center"
-        p="2"
-        sx={{
-          postion: "sticky",
-          top: "0",
-          p: "10px",
-          backgroundColor: "#000",
-          justifyContent: "space-between",
-          borderBottom: "1px solid #3d3d3d",
+    <Stack
+      direction="row"
+      alignItems="center"
+      sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        px: { xs: 2, md: 3 },
+        py: 1.5,
+        backgroundColor: "rgba(10, 10, 10, 0.85)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
+        justifyContent: "space-between",
+        gap: 2,
+      }}
+    >
+      {/* Logo */}
+      <Link
+        to="/"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          flexShrink: 0,
         }}
       >
-        <Link
-          to="/"
+        {/* YouTube icon SVG inline — no broken external image */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="#ff0000"
+        >
+          <path d="M21.58 7.19a2.75 2.75 0 0 0-1.93-1.94C18.01 4.75 12 4.75 12 4.75s-6.01 0-7.65.5A2.75 2.75 0 0 0 2.42 7.19C1.93 8.84 1.93 12 1.93 12s0 3.16.49 4.81a2.75 2.75 0 0 0 1.93 1.94c1.64.5 7.65.5 7.65.5s6.01 0 7.65-.5a2.75 2.75 0 0 0 1.93-1.94c.49-1.65.49-4.81.49-4.81s0-3.16-.49-4.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+        </svg>
+
+        <span
           style={{
-            display: "flex",
-            alignItems: "center",
-            padding: "0 10px",
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 800,
+            fontSize: "20px",
+            letterSpacing: "-0.5px",
+            color: "#fff",
           }}
         >
-          <img
-            src="https://www.freeiconspng.com/thumbs/youtube-logo-png/hd-youtube-logo-png-transparent-background-20.png"
-            alt="logo"
-            height="40px"
-          />
-          <Typography
-            variant="h6"
-            color="red"
-            fontWeight="bold"
-            fontStyle="italic"
-            letterSpacing="2px"
-          >
-            Y
-            <span
-              style={{
-                fontFamily: "sans-serif",
-                fontSize: "12px",
-                color: "whitesmoke",
-              }}
-            >
-              ou
-            </span>
-            T
-            <span
-              style={{
-                fontFamily: "sans-serif",
-                fontSize: "12px",
-                color: "whitesmoke",
-              }}
-            >
-              ube
-            </span>
-          </Typography>
-        </Link>
-        <SearchBar />
-      </Stack>
-    </div>
+          You<span style={{ color: "#ff0000" }}>Tube</span>
+        </span>
+      </Link>
+
+      <SearchBar />
+    </Stack>
   );
 };
 

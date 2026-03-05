@@ -2,61 +2,116 @@ import { CheckCircle } from "@mui/icons-material";
 import { Box, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { demoProfilePicture } from "../utils/constants";
 
 const ChannelCard = ({ channelDetail, width, marginTop }) => {
+  const channelId = channelDetail?.id?.channelId;
+  const thumbnail =
+    channelDetail?.snippet?.thumbnails?.high?.url ||
+    channelDetail?.snippet?.thumbnails?.default?.url ||
+    "";
+  const title = channelDetail?.snippet?.title;
+  const subCount = channelDetail?.statistics?.subscriberCount;
+
   return (
     <Box
       sx={{
-        width: width ? width : { xs: "320px" },
-        height: "320px",
+        width: width || { xs: "100%", sm: "320px" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         marginTop,
       }}
     >
-      <Link to={`/channel/${channelDetail?.id?.channelId}`}>
+      <Link to={`/channel/${channelId}`} style={{ width: "100%" }}>
         <CardContent
           sx={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            color: "lightgray",
+            gap: 1,
+            py: 2.5,
+            px: 2,
+            borderRadius: "14px",
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            transition:
+              "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
+            "&:hover": {
+              transform: "translateY(-3px)",
+              boxShadow: "0 10px 28px rgba(0,0,0,0.4)",
+              borderColor: "rgba(255,255,255,0.18)",
+            },
           }}
         >
-          <CardMedia
-            image={
-              channelDetail?.snippet?.thumbnails?.high?.url ||
-              demoProfilePicture
-            }
-            alt={channelDetail?.snippet?.title}
-            sx={{
-              borderRadius: "50%",
-              height: "200px",
-              width: "200px",
-            }}
-          />
-          <Typography variant="h6">
-            {channelDetail?.snippet?.title}
-            <CheckCircle
+          {/* Avatar — simple, no gradient ring */}
+          {thumbnail ? (
+            <CardMedia
+              component="img"
+              image={thumbnail}
+              alt={title || "Channel"}
               sx={{
-                height: 12,
-                ml: "2px",
+                borderRadius: "50%",
+                height: "80px",
+                width: "80px",
+                objectFit: "cover",
+                display: "block",
+                border: "2px solid rgba(255,255,255,0.1)",
+                mb: 0.5,
               }}
+            />
+          ) : (
+            <Box
+              sx={{
+                borderRadius: "50%",
+                height: "80px",
+                width: "80px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "linear-gradient(135deg, #1a1a2e, #16213e)",
+                border: "2px solid rgba(255,255,255,0.1)",
+                color: "#fff",
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "28px",
+                fontWeight: 700,
+                mb: 0.5,
+              }}
+            >
+              {title?.charAt(0)?.toUpperCase() || "?"}
+            </Box>
+          )}
+
+          {/* Channel Name */}
+          <Typography
+            sx={{
+              color: "#fff",
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
+              fontSize: "13.5px",
+              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              lineHeight: 1.3,
+            }}
+          >
+            {title}
+            <CheckCircle
+              sx={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}
             />
           </Typography>
 
-          {/* below it will not work in 'feed' but it will work in 'details section'...
-          we will get stats on profile page..
-          */}
-          {channelDetail?.statistics?.subscriberCount && (
-            <Typography variant="subtitle3">
-              {parseInt(
-                channelDetail?.statistics?.subscriberCount
-              ).toLocaleString()}
-              Subscribers
+          {/* Subscribers */}
+          {subCount && (
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,0.3)",
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "11.5px",
+              }}
+            >
+              {parseInt(subCount).toLocaleString()} subscribers
             </Typography>
           )}
         </CardContent>
